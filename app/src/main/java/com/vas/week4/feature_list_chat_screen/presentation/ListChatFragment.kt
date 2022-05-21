@@ -2,6 +2,7 @@ package com.vas.week4.feature_list_chat_screen.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +65,8 @@ class ListChatFragment : Fragment() {
             it?.let { resource ->
                 when(resource) {
                     is Resource.Success -> {
-                        adapterChats?.data = it.data!!
+                        Log.d("list_check", it.data?.size.toString())
+                        adapterChats?.differ?.submitList(it.data)
                         binding?.swipeRefreshLayout?.isRefreshing = false
                     }
 

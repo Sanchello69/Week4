@@ -9,6 +9,6 @@ class ListChatRepositoryImpl : ListChatRepository {
     var listChat: ArrayList<Chat> = arrayListOf()
         get() = generationListChat(field)
 
-    override fun getChats(): ArrayList<Chat> = listChat
+    override fun getChats(): List<Chat> = listChat.toList()
 
 }

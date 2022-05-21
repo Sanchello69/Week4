@@ -5,7 +5,7 @@ import com.vas.week4.feature_list_chat_screen.domain.repository.ListChatReposito
 
 class GetListChatUseCase(private val listChatRepository: ListChatRepository) {
 
-    fun execute(): ArrayList<Chat> {
+    fun execute(): List<Chat> {
         return listChatRepository.getChats()
     }
 
