@@ -28,7 +28,19 @@ fun generationListChat(listChat: ArrayList<Chat>): ArrayList<Chat>{
     val randomNumber = listChat.indices.random()
     listChat[randomNumber] = modificationChat(listChat[randomNumber])
 
+    /*listChat.sortByDescending {
+        it.time
+    }*/
+
     return listChat
+}
+
+fun pagingListChat(page: Int, listChat: ArrayList<Chat>): List<Chat>{
+    return when {
+        listChat.size>=page*10 -> listChat.slice(((page-1)*10) until page*10)
+        listChat.size>=(page-1)*10 -> listChat.slice(((page-1)*10) until listChat.size)
+        else -> listOf()
+    }
 }
 
 fun modificationChat(chat: Chat): Chat{

@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vas.week4.R
 import com.vas.week4.databinding.FragmentListChatBinding
+import com.vas.week4.feature_list_chat_screen.data.model.Chat
 import com.vas.week4.feature_list_chat_screen.di.ListChatComponentViewModel
 import com.vas.week4.utils.Resource
 import javax.inject.Inject
@@ -24,6 +27,7 @@ class ListChatFragment : Fragment() {
     private var binding: FragmentListChatBinding? = null
     private var viewModel: ListChatViewModel? = null
     private var adapterChats: ListChatAdapter? = null
+    private var scrollListener: RecyclerView.OnScrollListener? = null
 
     override fun onAttach(context: Context) {
         ViewModelProvider(this).get<ListChatComponentViewModel>()
@@ -40,7 +44,7 @@ class ListChatFragment : Fragment() {
 
         setupViewModel()
         setupUI()
-        setupObservers()
+        setupObserversForPaging()
 
         return binding?.root
     }
@@ -60,36 +64,40 @@ class ListChatFragment : Fragment() {
         initSwipeRefreshLayout()
     }
 
-    private fun setupObservers() {
-        viewModel?.getListChat()?.observe(viewLifecycleOwner, Observer {
-            it?.let { resource ->
-                when(resource) {
-                    is Resource.Success -> {
-                        Log.d("list_check", it.data?.size.toString())
-                        adapterChats?.differ?.submitList(it.data)
-                        binding?.swipeRefreshLayout?.isRefreshing = false
-                    }
-
-                    is Resource.Error -> {
-                        binding?.swipeRefreshLayout?.isRefreshing = false
-                    }
-
-                    is Resource.Loading -> {
-                        binding?.swipeRefreshLayout?.isRefreshing = true
-                    }
-                }
-            }
+    private fun setupObserversForPaging() {
+        viewModel?.getPageListChat()
+        viewModel?.chatList?.observe(viewLifecycleOwner, Observer {
+            adapterChats?.differ?.submitList(it)
+            binding?.swipeRefreshLayout?.isRefreshing = false
         })
+
     }
 
     private fun initChatsRecyclerView() {
         adapterChats = ListChatAdapter()
         binding?.chatRecyclerView?.adapter = adapterChats
+        binding?.chatRecyclerView?.itemAnimator = null
+        setRecyclerViewScrollListener()
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val totalItemCount = recyclerView.layoutManager?.itemCount
+                if (totalItemCount ==  adapterChats?.differ?.currentList?.size) {
+                    Log.d("MyTAG", "Load new list")
+                    viewModel?.getPageListChat()
+                    //binding?.chatRecyclerView?.removeOnScrollListener(scrollListener!!)
+                }
+            }
+        }
+        binding?.chatRecyclerView?.addOnScrollListener(scrollListener as RecyclerView.OnScrollListener)
     }
 
     private fun initSwipeRefreshLayout() {
         binding?.swipeRefreshLayout?.setOnRefreshListener {
-            setupObservers()
+            viewModel?.updateListChat()
         }
     }
 }

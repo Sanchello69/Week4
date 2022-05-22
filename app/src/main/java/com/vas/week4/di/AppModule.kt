@@ -1,6 +1,8 @@
 package com.vas.week4.di
 
 import com.vas.week4.feature_list_chat_screen.domain.useCase.GetListChatUseCase
+import com.vas.week4.feature_list_chat_screen.domain.useCase.GetPageListChatUseCase
+import com.vas.week4.feature_list_chat_screen.domain.useCase.UpdateListChatUseCase
 import com.vas.week4.feature_list_chat_screen.presentation.ListChatViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -9,7 +11,12 @@ import dagger.Provides
 class AppModule {
 
     @Provides
-    fun provideListChatViewModelFactory(getListChatUseCase: GetListChatUseCase): ListChatViewModelFactory{
-        return ListChatViewModelFactory(getListChatUseCase = getListChatUseCase)
+    fun provideListChatViewModelFactory(getListChatUseCase: GetListChatUseCase,
+                                        getPageListChatUseCase: GetPageListChatUseCase,
+                                        updateListChatUseCase: UpdateListChatUseCase
+    ): ListChatViewModelFactory{
+        return ListChatViewModelFactory(getListChatUseCase = getListChatUseCase,
+        getPageListChatUseCase = getPageListChatUseCase,
+        updateListChatUseCase = updateListChatUseCase)
     }
 }
