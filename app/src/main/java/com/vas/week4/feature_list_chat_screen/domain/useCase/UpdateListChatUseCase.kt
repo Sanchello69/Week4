@@ -5,8 +5,8 @@ import com.vas.week4.feature_list_chat_screen.domain.repository.ListChatReposito
 
 class UpdateListChatUseCase(private val listChatRepository: ListChatRepository) {
 
-    fun update() {
-        listChatRepository.updateChats()
+    fun update(): List<Chat> {
+        return listChatRepository.updateChats()
     }
 
 }

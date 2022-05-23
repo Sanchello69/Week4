@@ -1,5 +1,6 @@
 package com.vas.week4.feature_list_chat_screen.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,12 @@ import com.vas.week4.R
 import com.vas.week4.feature_list_chat_screen.data.model.Chat
 
 class ListChatAdapter : RecyclerView.Adapter<ListChatAdapter.ItemChatViewHolder>() {
+
+    var onClickListener: OnChatClickListener? = null
+
+    interface OnChatClickListener {
+        fun onChatClick(chat: Chat)
+    }
 
     private val differCallback = object : DiffUtil.ItemCallback<Chat>() {
         override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
@@ -55,6 +62,11 @@ class ListChatAdapter : RecyclerView.Adapter<ListChatAdapter.ItemChatViewHolder>
             nameTextView.text = item.name
             messageTextView.text = item.lastMessage
             timeTextView.text = item.time.toString("HH:mm")
+
+            itemView.setOnClickListener {
+                onClickListener?.onChatClick(item)
+            }
+
 
             if (item.myMessage)
                 messageTextView.text = "Вы: " + item.lastMessage

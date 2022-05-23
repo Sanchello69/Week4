@@ -1,5 +1,7 @@
 package com.vas.week4.di
 
+import com.vas.week4.feature_chat_screen.domain.repository.ChatRepository
+import com.vas.week4.feature_chat_screen.domain.useCase.GetMessagesUseCase
 import com.vas.week4.feature_list_chat_screen.domain.repository.ListChatRepository
 import com.vas.week4.feature_list_chat_screen.domain.useCase.GetListChatUseCase
 import com.vas.week4.feature_list_chat_screen.domain.useCase.GetPageListChatUseCase
@@ -23,5 +25,10 @@ class DomainModule {
     @Provides
     fun provideUpdateListChatUseCase(listChatRepository: ListChatRepository): UpdateListChatUseCase {
         return UpdateListChatUseCase(listChatRepository = listChatRepository)
+    }
+
+    @Provides
+    fun provideGetChatUseCase(chatRepository: ChatRepository): GetMessagesUseCase{
+        return GetMessagesUseCase(chatRepository = chatRepository)
     }
 }

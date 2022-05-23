@@ -1,5 +1,7 @@
 package com.vas.week4.di
 
+import com.vas.week4.feature_chat_screen.domain.useCase.GetMessagesUseCase
+import com.vas.week4.feature_chat_screen.presentation.ChatViewModelFactory
 import com.vas.week4.feature_list_chat_screen.domain.useCase.GetListChatUseCase
 import com.vas.week4.feature_list_chat_screen.domain.useCase.GetPageListChatUseCase
 import com.vas.week4.feature_list_chat_screen.domain.useCase.UpdateListChatUseCase
@@ -18,5 +20,10 @@ class AppModule {
         return ListChatViewModelFactory(getListChatUseCase = getListChatUseCase,
         getPageListChatUseCase = getPageListChatUseCase,
         updateListChatUseCase = updateListChatUseCase)
+    }
+
+    @Provides
+    fun provideChatViewModelFactory(getMessagesUseCase: GetMessagesUseCase): ChatViewModelFactory{
+        return ChatViewModelFactory(getMessagesUseCase = getMessagesUseCase)
     }
 }

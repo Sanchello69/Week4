@@ -1,6 +1,5 @@
 package com.vas.week4.feature_list_chat_screen.data.model
 
-import com.vas.week4.feature_chat_screen.data.model.Message
 import java.util.*
 
 data class Chat(
@@ -17,8 +16,6 @@ data class Chat(
 
     val unreadMessages: Int,
 
-    val myMessage: Boolean,
-
-    //val messageList: ArrayList<Message>
+    val myMessage: Boolean
 
 )

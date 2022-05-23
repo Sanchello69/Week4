@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vas.week4.R
 import com.vas.week4.databinding.FragmentListChatBinding
 import com.vas.week4.feature_list_chat_screen.data.model.Chat
 import com.vas.week4.feature_list_chat_screen.di.ListChatComponentViewModel
-import com.vas.week4.utils.Resource
 import javax.inject.Inject
 
 class ListChatFragment : Fragment() {
@@ -75,6 +74,11 @@ class ListChatFragment : Fragment() {
 
     private fun initChatsRecyclerView() {
         adapterChats = ListChatAdapter()
+        adapterChats?.onClickListener = object : ListChatAdapter.OnChatClickListener{
+            override fun onChatClick(chat: Chat) {
+                navigateToChat(chat)
+            }
+        }
         binding?.chatRecyclerView?.adapter = adapterChats
         binding?.chatRecyclerView?.itemAnimator = null
         setRecyclerViewScrollListener()
@@ -86,13 +90,26 @@ class ListChatFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 val totalItemCount = recyclerView.layoutManager?.itemCount
                 if (totalItemCount ==  adapterChats?.differ?.currentList?.size) {
-                    Log.d("MyTAG", "Load new list")
                     viewModel?.getPageListChat()
                     //binding?.chatRecyclerView?.removeOnScrollListener(scrollListener!!)
                 }
             }
         }
         binding?.chatRecyclerView?.addOnScrollListener(scrollListener as RecyclerView.OnScrollListener)
+    }
+
+    private fun navigateToChat(item: Chat){
+        Log.d("click", "click")
+        val navController = findNavController()
+        val bundle = Bundle().apply {
+            putInt("photo", item.photo)
+            putString("name", item.name)
+            putString("lastMessage", item.lastMessage)
+            putString("time", item.time.toString())
+            putInt("unreadMessage", item.unreadMessages)
+            putBoolean("myMessage", item.myMessage)
+        }
+        navController.navigate(R.id.action_listChatFragment_to_chatFragment, bundle)
     }
 
     private fun initSwipeRefreshLayout() {

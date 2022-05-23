@@ -43,15 +43,15 @@ class ListChatViewModel(private val getListChatUseCase: GetListChatUseCase,
         }
     }
 
-    private suspend fun updateListChatUseCaseExecuting(){
-        withContext(Dispatchers.IO){
+    private suspend fun updateListChatUseCaseExecuting(): List<Chat>{
+        return withContext(Dispatchers.IO){
             updateListChatUseCase.update()
         }
     }
 
     fun updateListChat(){
         ioScope.launch {
-            updateListChatUseCaseExecuting()
+            _chatList.value = updateListChatUseCaseExecuting()
         }
     }
 }

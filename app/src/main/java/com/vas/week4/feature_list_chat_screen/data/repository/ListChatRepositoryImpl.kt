@@ -16,11 +16,13 @@ class ListChatRepositoryImpl : ListChatRepository {
 
     override fun getChats(): List<Chat> = listChat.toList()
 
-    override fun updateChats(){
+    override fun updateChats(): List<Chat>{
         for (i in 0..10){
             val randomNumber = listChat.indices.random()
             listChat[randomNumber] = modificationChat(listChat[randomNumber])
         }
+        countPage = 0
+        return pagingListChat(countPage, listChat)
     }
 
     override fun getPageChats(): List<Chat> {

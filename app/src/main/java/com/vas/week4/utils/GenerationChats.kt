@@ -55,9 +55,9 @@ fun modificationChat(chat: Chat): Chat{
     )
 }
 
-fun generationChat(): ArrayList<Message>{
-    var listMessage: ArrayList<Message> = arrayListOf()
-    for (i in 0..(2..10).random()){
+fun generationChat(listMessage: ArrayList<Message>, lastMessage: String, lastTime: String, myMessage: Boolean,
+                   unreadMessage: Int): ArrayList<Message>{
+    for (i in 0..(10..20).random()){
         listMessage.add(
             Message(
                 message = message[message.indices.random()],
@@ -66,6 +66,17 @@ fun generationChat(): ArrayList<Message>{
             )
         )
     }
+    if (myMessage){
+        listMessage.add(
+            Message(lastMessage, Tempo.now, myMessage))
+    }
+    else{
+        for (i in 0..unreadMessage){
+            listMessage.add(
+                Message(lastMessage, Tempo.now, myMessage))
+        }
+    }
+
     return listMessage
 }
 
