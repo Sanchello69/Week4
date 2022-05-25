@@ -55,6 +55,30 @@ fun modificationChat(chat: Chat): Chat{
     )
 }
 
+fun pagingListMessage(page: Int, listMessage: ArrayList<Message>): List<Message>{
+    return when {
+        listMessage.size>=page*10 -> listMessage.slice(((page-1)*10) until page*10)
+        listMessage.size>=(page-1)*10 -> listMessage.slice(((page-1)*10) until listMessage.size)
+        else -> emptyList()
+    }
+}
+
+fun modificationMessage(message: Message): Message{
+    return Message(
+        message = GenerationChats.message[GenerationChats.message.indices.random()],
+        time = message.time,
+        myMessage = message.myMessage
+    )
+}
+
+fun addMessage(): Message {
+    return Message(
+        message = message[message.indices.random()],
+        time = Tempo.now,
+        myMessage = false
+    )
+}
+
 fun generationChat(listMessage: ArrayList<Message>, lastMessage: String, lastTime: String, myMessage: Boolean,
                    unreadMessage: Int): ArrayList<Message>{
     for (i in 0..(10..20).random()){

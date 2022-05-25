@@ -22,7 +22,7 @@ class ListChatRepositoryImpl : ListChatRepository {
             listChat[randomNumber] = modificationChat(listChat[randomNumber])
         }
         countPage = 0
-        return pagingListChat(countPage, listChat)
+        return getPageChats()
     }
 
     override fun getPageChats(): List<Chat> {
