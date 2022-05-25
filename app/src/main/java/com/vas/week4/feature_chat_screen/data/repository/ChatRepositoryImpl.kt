@@ -7,28 +7,26 @@ import com.vas.week4.utils.*
 
 class ChatRepositoryImpl : ChatRepository {
 
-    var listMessage: ArrayList<Message> = arrayListOf()
+    private var listMessage: ArrayList<Message> = arrayListOf()
 
-    var countPage = 0
+    private var countPage = 0
 
     init {
-        for (i in 0..25){
-            //val randomNumber = listMessage.indices.random()
-            //listMessage[randomNumber] = modificationMessage(listMessage[randomNumber])
-            listMessage.add(addMessage())
-        }
+        listMessage.addAll(generationChat(
+            listMessage = listMessage
+        ))
     }
 
     override suspend fun getMessages(lastMessage: String, lastTime: String, myMessage: Boolean,
                     unreadMessage: Int): List<Message> {
         Log.d("repoGetMes", "tuck")
-        listMessage = generationChat(
+        listMessage.addAll(generationChat(
             listMessage = listMessage,
             lastMessage = lastMessage,
             myMessage = myMessage,
             unreadMessage = unreadMessage,
             lastTime = lastTime
-        )
+        ))
         Log.d("get_repo", listMessage.size.toString())
         return listMessage.toList()
     }

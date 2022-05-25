@@ -51,6 +51,7 @@ class ChatViewModel(private val getMessagesUseCase: GetMessagesUseCase,
     fun updateMessages(){
         ioScope.launch {
             Log.d("viewModelUpdate", "tuck")
+            listMessage = listMessage + updateMessagesUseCaseExecuting()
             _messageList.value = updateMessagesUseCaseExecuting()
         }
     }

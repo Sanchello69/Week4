@@ -79,9 +79,12 @@ fun addMessage(): Message {
     )
 }
 
-fun generationChat(listMessage: ArrayList<Message>, lastMessage: String, lastTime: String, myMessage: Boolean,
-                   unreadMessage: Int): ArrayList<Message>{
-    for (i in 0..(10..20).random()){
+fun generationChat(listMessage: ArrayList<Message>,
+                   lastMessage: String = message[message.indices.random()],
+                   lastTime: String = Tempo.now.toString(),
+                   myMessage: Boolean = (0..1).random() != 0,
+                   unreadMessage: Int = (0..9).random()): ArrayList<Message>{
+    for (i in 0..(3..10).random()){
         listMessage.add(
             Message(
                 message = message[message.indices.random()],

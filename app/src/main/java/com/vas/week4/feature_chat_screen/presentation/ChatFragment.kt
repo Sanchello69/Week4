@@ -42,7 +42,6 @@ class ChatFragment : Fragment() {
         setupViewModel()
         setupUI()
         setupObservers()
-        initSwipeRefreshLayout()
 
         return binding?.root
     }
@@ -62,23 +61,17 @@ class ChatFragment : Fragment() {
         binding?.photo?.setImageResource(arguments?.getInt("photo")!!)
 
         initMessagesRecyclerView()
-
+        initSwipeRefreshLayout()
     }
 
 
 
     private fun setupObservers() {
         Log.d("fragmentSetupObservers", "tuck")
-        viewModel?.getMessages(
-            lastMessage = arguments?.getString("lastMessage")!!,
-            lastTime = arguments?.getString("time")!!,
-            myMessage = arguments?.getBoolean("myMessage")!!,
-            unreadMessage = arguments?.getInt("unreadMessage")!!
-        )
+
         viewModel?.getPageMessage()
         viewModel?.messageList?.observe(viewLifecycleOwner, Observer {
             adapterMessages?.messages = it
-            //binding?.swipeRefreshLayoutMessage?.isRefreshing = false
         })
     }
 
